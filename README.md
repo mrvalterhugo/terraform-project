@@ -23,3 +23,8 @@ Resources that will be **created**:
 - Cloud Flare DNS entries
 - Terraform outputs.
 > Please note that you need to change the terraform.tfvars for you own use.
+
+## Update
+
+- Changed from __user_data__ to script __provisioner__ as I had few issues with user data option.
+- __userdata__ script has been modified a bit.

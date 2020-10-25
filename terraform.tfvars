@@ -3,19 +3,21 @@ aws_profile      = "default"
 aws_region       = "eu-west-2"
 vpc_cidr         = "192.168.0.0/16"
 localip          = ["0.0.0.0/0"]
-key              = "You-AWS-SSH-Key-Name"
+key_name         = "dockerk"
+user_name        = "admin"
+public_key_path  = "~/docker.pem"
 instance_type    = "t2.micro"
 domain           = "example.com"
-domain-zone-id   = "64564646464664646example"
-cloudflare_token = "f5sdf4sd54f5sd4fexample"
+domain-zone-id   = "92899841domain-zone-id-aa4c7f70"
+cloudflare_token = "2Qf7ZDcloud-flare-token-kPrmHeAS"
 user_data        = "userdata.sh"
 
 apps = {
-  docker  = "docker"
-  pihole  = "pihole"
-  nginx   = "nginx"
-  code    = "code"
-  whoogle = "google"
+  docker  = "docker2"
+  pihole  = "pihole2"
+  nginx   = "nginx2"
+  code    = "code2"
+  whoogle = "google2"
 }
 
 cidrs = {

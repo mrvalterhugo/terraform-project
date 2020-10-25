@@ -101,9 +101,9 @@ resource "aws_security_group" "docker_public_sg" {
   #SSH
   ingress {
     description = "Allow SSH - Local IP Only"
-    from_port = 22
-    to_port   = 22
-    protocol  = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -111,9 +111,9 @@ resource "aws_security_group" "docker_public_sg" {
   #Nginx Admin Portal
   ingress {
     description = "Allow NGINX admin port"
-    from_port = 7779
-    to_port   = 7779
-    protocol  = "tcp"
+    from_port   = 7779
+    to_port     = 7779
+    protocol    = "tcp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -121,9 +121,9 @@ resource "aws_security_group" "docker_public_sg" {
   #DNS
   ingress {
     description = "Allow DNS from Local IP"
-    from_port = 53
-    to_port   = 53
-    protocol  = "tcp"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "tcp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -131,9 +131,9 @@ resource "aws_security_group" "docker_public_sg" {
   #DNS
   ingress {
     description = "Allow DNS from Local IP"
-    from_port = 53
-    to_port   = 53
-    protocol  = "udp"
+    from_port   = 53
+    to_port     = 53
+    protocol    = "udp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -141,9 +141,9 @@ resource "aws_security_group" "docker_public_sg" {
   #DNS
   ingress {
     description = "Allow DNS from Local IP"
-    from_port = 67
-    to_port   = 67
-    protocol  = "tcp"
+    from_port   = 67
+    to_port     = 67
+    protocol    = "tcp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -151,9 +151,9 @@ resource "aws_security_group" "docker_public_sg" {
   #DNS
   ingress {
     description = "Allow DNS from Local IP"
-    from_port = 67
-    to_port   = 67
-    protocol  = "udp"
+    from_port   = 67
+    to_port     = 67
+    protocol    = "udp"
     # Allow my IP only
     cidr_blocks = var.localip
   }
@@ -179,7 +179,8 @@ resource "aws_instance" "docker-ec2" {
   root_block_device {
     volume_size = 30
   }
-  key_name = var.key
+
+  key_name = var.key_name
   vpc_security_group_ids = [
     aws_security_group.docker_public_sg.id
   ]
@@ -188,10 +189,18 @@ resource "aws_instance" "docker-ec2" {
   tags = {
     Name = "docker-server"
   }
-  user_data = "${file(var.user_data)}"
-  #provisioner "local-exec" {
-  #  command = "aws ec2 wait instance-status-ok --instance-ids ${aws_instance.docker-ec2.id}"
-  #}
+
+  connection {
+    type        = "ssh"
+    user        = var.user_name
+    private_key = file(var.public_key_path)
+    host        = aws_instance.docker-ec2.public_ip
+  }
+  provisioner "remote-exec" {
+    script = var.user_data
+  }
+
+
 }
 
 
@@ -257,27 +266,27 @@ resource "cloudflare_record" "code" {
 
 #Outputs
 output "docker-public-ip" {
-    value = aws_instance.docker-ec2.public_ip
+  value = aws_instance.docker-ec2.public_ip
 }
 output "docker-private-ip" {
-    value = aws_instance.docker-ec2.private_ip
+  value = aws_instance.docker-ec2.private_ip
 }
 output "Code" {
-    value = cloudflare_record.code.hostname
+  value = cloudflare_record.code.hostname
 }
 
 output "Docker" {
-    value = cloudflare_record.docker.hostname
+  value = cloudflare_record.docker.hostname
 }
 output "Nginx" {
-    value = cloudflare_record.nginx.hostname
+  value = cloudflare_record.nginx.hostname
 }
 output "Pihole" {
-    value = cloudflare_record.pihole.hostname
+  value = cloudflare_record.pihole.hostname
 }
 output "Prod" {
-    value = cloudflare_record.prod.hostname
+  value = cloudflare_record.prod.hostname
 }
 output "Whoogle" {
-    value = cloudflare_record.whoogle.hostname
+  value = cloudflare_record.whoogle.hostname
 }
