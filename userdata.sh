@@ -3,45 +3,31 @@
 ##Set Hostname
 sudo hostnamectl set-hostname docker-server
 
-sudo apt install -y apt-transport-https && echo 'apt-transport-https has been installed #####################################################################' && sleep 3
-sudo apt install -y ca-certificates && echo 'ca-certificates has been installed #####################################################################' && sleep 3
-sudo apt install -y curl && echo 'curl has been installed #####################################################################' && sleep 3
-sudo apt install -y gnupg-agent && echo 'gnupg-agent has been installed #####################################################################' && sleep 3
-sudo apt install -y software-properties-common && echo 'software-properties-common has been installed #####################################################################' && sleep 3
-sudo add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' && echo 'docker repo has been installed #############################################' && sleep 3
-sudo curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && echo 'key has been downloaded #####################################################################' && sleep 3
-sudo apt-key fingerprint 0EBFCD88 && echo 'fingerprint key has been add #####################################################################' && sleep 3
-sudo apt update && echo 'APT updated #####################################################################' && sleep 3
-sudo apt install docker-ce -y && echo 'Docker-ce installed #####################################################################' && sleep 3
-sudo apt install docker-ce-cli -y && echo 'Docker-ce-cli installed #####################################################################' && sleep 3
-sudo apt install containerd.io -y && echo 'containerd.io installed #####################################################################' && sleep 3
-sudo apt install docker-compose -y && echo 'docker-compose installed #####################################################################' && sleep 3
-sudo apt install jq -y && echo 'jq installed #####################################################################' && sleep 3
-sudo curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' && echo 'AWS-CLI downloaded ############################################' && sleep 3
-sudo apt install -y unzip && echo 'Unzip has been installed #####################################################################' && sleep 3
-sudo unzip awscliv2.zip && echo 'AWS-CLI unzipped #####################################################################' && sleep 3
-sudo ./aws/install && echo 'AWS-CLI installed #####################################################################' && sleep 3
+sudo apt install -y apt-transport-https && echo 'apt-transport-https has been installed ###############' && sleep 3
+sudo apt install -y ca-certificates && echo 'ca-certificates has been installed #######################' && sleep 3
+sudo apt install -y curl && echo 'curl has been installed #############################################' && sleep 3
+sudo apt install -y gnupg-agent && echo 'gnupg-agent has been installed ###############################' && sleep 3
+sudo apt install -y software-properties-common && echo 'software-properties-common has been installed ' && sleep 3
+sudo add-apt-repository 'deb [arch=amd64] https://download.docker.com/linux/debian buster stable' && echo 'docker repo has been installed ########' && sleep 3
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && echo 'key has been downloaded ######' && sleep 3
+sudo apt-key fingerprint 0EBFCD88 && echo 'fingerprint key has been add ###############################' && sleep 3
+sudo apt update && echo 'APT updated ##################################################################' && sleep 3
+sudo apt install docker-ce -y && echo 'Docker-ce installed ############################################' && sleep 3
+sudo apt install docker-ce-cli -y && echo 'Docker-ce-cli installed ####################################' && sleep 3
+sudo apt install containerd.io -y && echo 'containerd.io installed ####################################' && sleep 3
+sudo apt install docker-compose -y && echo 'docker-compose installed ##################################' && sleep 3
+sudo apt install jq -y && echo 'jq installed ##########################################################' && sleep 3
+sudo curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' && echo 'AWS-CLI downloaded ####' && sleep 3
+sudo apt install -y unzip && echo 'Unzip has been installed ###########################################' && sleep 3
+sudo unzip awscliv2.zip && echo 'AWS-CLI unzipped #####################################################' && sleep 3
+sudo ./aws/install && echo 'AWS-CLI installed #########################################################' && sleep 3
 
-echo 'All Packages have been installed #####################################################################' && sleep 3
+echo 'All Packages have been installed ################################################################' && sleep 3
 
 #Create folders to be used by containers
 mkdir -p ~/configs/{netdata,pihole,nginx,guacamole,syncthing,portainer,whoogle,cloudflare,code}
 
 #Create docker file inside folders
-
-#######CloudFlare#######
-cat << 'EOF' > ~/configs/cloudflare/docker-compose.yaml
-version: '2'
-services:
-  cloudflare-ddns:
-    image: oznu/cloudflare-ddns:latest
-    restart: always
-    environment:
-      - API_KEY=xxxxxxx
-      - ZONE=example.com
-      - SUBDOMAIN=subdomain
-      - PROXIED=false
-EOF
 
 #######Portainer#######
 cat << 'EOF' > ~/configs/portainer/docker-compose.yaml
@@ -230,9 +216,23 @@ services:
     restart: unless-stopped
 EOF
 
+#######CloudFlare#######
+cat << 'EOF' > ~/configs/cloudflare/docker-compose.yaml
+version: '2'
+services:
+  cloudflare-ddns:
+    image: oznu/cloudflare-ddns:latest
+    restart: always
+    environment:
+      - API_KEY=xxxxxxx
+      - ZONE=example.com
+      - SUBDOMAIN=subdomain
+      - PROXIED=false
+EOF
+
 #Start all containers
 echo "##################"
-echo "Donwloading and starting containers"
+echo "Downloading and starting containers"
 echo "##################"
 sleep 3
 sudo docker-compose -f ~/configs/nginx/docker-compose.yaml up -d
