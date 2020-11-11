@@ -21,7 +21,7 @@ sudo curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv
 sudo apt install -y unzip && echo 'Unzip has been installed ###########################################' && sleep 3
 sudo unzip awscliv2.zip && echo 'AWS-CLI unzipped #####################################################' && sleep 3
 sudo ./aws/install && echo 'AWS-CLI installed #########################################################' && sleep 3
-
+rm -f aws awscliv2.zip
 echo 'All Packages have been installed ################################################################' && sleep 3
 
 #Create folders to be used by containers
